@@ -1,6 +1,6 @@
 /// Models a query to the anilist API
 
-use crate::utils::{Date, Int,Season};
+use crate::utils::{Date, Int, Season};
 
 pub enum Sort {
     Score,
