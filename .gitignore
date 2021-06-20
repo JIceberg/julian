@@ -13,4 +13,9 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# Project speciifc
+
 /.ipynb_checkpoints/
+*.csv
+*.txt

@@ -1,4 +1,5 @@
 use std::cmp::{Ord, PartialEq, Eq, PartialOrd, Ordering};
+use serde::{Serialize, Serializer};
 
 pub type Int = u32;
 
@@ -15,20 +16,46 @@ impl Date {
     }
 
     pub fn as_fuzzy(&self) -> String {
-        let mut date_str = self.year.to_string();
+        if self.year == 0 {
+            return "None".to_string();
+        }
+
+        let year = {
+            if self.year < 100 {
+                format!("20{}", self.year)
+            } else {
+                self.year.to_string()
+            }
+        };
+        let month = {
+            if self.month < 10 {
+                format!("0{}", self.month)
+            } else {
+                self.month.to_string()
+            }
+        };
+        let day = {
+            if self.day < 10 {
+                format!("0{}", self.day)
+            } else {
+                self.day.to_string()
+            }
+        };
+
+        let mut date_str = year;
 
         date_str.push_str(
-            self.month
-                .to_string()
-                .as_str()
+            month.as_str()
         );
         date_str.push_str(
-            self.day
-                .to_string()
-                .as_str()
+            day.as_str()
         );
 
         date_str
+    }
+
+    pub fn get_year(&self) -> Int {
+        self.year
     }
 }
 
@@ -50,4 +77,20 @@ pub enum Season {
     Spring,
     Summer,
     Winter,
+    None,
+}
+
+impl Serialize for Season {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            Self::Winter => serializer.serialize_unit_variant("Season", 0, "Winter"),
+            Self::Spring => serializer.serialize_unit_variant("Season", 1, "Spring"),
+            Self::Summer => serializer.serialize_unit_variant("Season", 2, "Summer"),
+            Self::Fall => serializer.serialize_unit_variant("Season", 3, "Fall"),
+            Self::None => serializer.serialize_unit_variant("Season", 4, "None")
+        }
+    }
 }
