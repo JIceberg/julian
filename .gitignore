@@ -19,3 +19,5 @@ Cargo.lock
 /.ipynb_checkpoints/
 *.csv
 *.txt
+
+.env/
