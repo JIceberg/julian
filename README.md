@@ -1,4 +1,4 @@
-# Julian (WIP)
+# Julian 
 
 A serverless project that discovers statistics on anime in Rust with Jupyter.
 
